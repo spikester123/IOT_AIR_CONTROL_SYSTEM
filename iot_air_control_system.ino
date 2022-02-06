@@ -22,7 +22,7 @@ int air_quality;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
-  // put your setup code here, to run once:
+ //Wi-Fi set up
   Serial.begin(9600);
   Serial.println("----------");
 delay(100);
@@ -40,7 +40,7 @@ delay(100);
  
   ThingSpeak.begin(client);
 
-
+//set up for the Lcd screen 
 lcd.begin();
 lcd.setCursor (0,0);
 lcd.print ("circuitdigest ");
@@ -55,11 +55,11 @@ lcd.clear();
 void loop() {
 
   delay(2000);
-  
-  // put your main code here, to run repeatedly:
+  //set up the sensor data and values
 MQ135 gasSensor = MQ135(A0);
 float air_quality = gasSensor.getPPM();
 
+  //set up the lcd screens output of data variables and names
 lcd.setCursor (0, 0);
 lcd.print ("Air Quality: ");
 lcd.print (air_quality);
@@ -83,7 +83,7 @@ lcd.print("Danger!");
 lcd.scrollDisplayLeft();
 delay(1000);
 
-
+//print all data to serial monitor
 Serial.print("Air Quality: ");
 Serial.print(air_quality);
 Serial.print("PPM ");
@@ -102,7 +102,7 @@ else if (air_quality<=2000 )
   Serial.println("Danger!");
   
 }
-
+//output to ThingSpeak
 ThingSpeak.setField(1, float(air_quality));
 ThingSpeak.writeFields(channel_id, write_api_key);
 
